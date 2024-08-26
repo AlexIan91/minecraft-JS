@@ -7,7 +7,10 @@ import { Physics } from './physics';
 import { setupUI } from './ui';
 import { ModelLoader } from './modelLoader';
 
-// UI Setup
+import { NPC } from './npc.js';
+
+ 
+// UI Setup. This is the side-panel that let's us change settings.
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
@@ -15,20 +18,23 @@ document.body.appendChild(stats.dom);
 const renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x80a0e0);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setClearColor(0x80a0e0); // This is the background color of the scene to blue.
+renderer.shadowMap.enabled = true; // Not sure how this impacts performance, might want to turn off.
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
 document.body.appendChild(renderer.domElement);
 
 // Scene setup
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x80a0e0, 50, 75);
+scene.fog = new THREE.Fog(0x80a0e0, 50, 75); // arguments: color, when fog starts, when fog ends
 
+// Create the world and generate the terrain.
 const world = new World();
 world.generate();
 scene.add(world);
 
 const player = new Player(scene, world);
+console.log("Player initial position:", player.position);
+
 const physics = new Physics(scene);
 
 // Camera setup
@@ -39,10 +45,12 @@ orbitCamera.layers.enable(1);
 const controls = new OrbitControls(orbitCamera, renderer.domElement);
 controls.update();
 
+// Load the player's tool model
 const modelLoader = new ModelLoader((models) => {
   player.setTool(models.pickaxe);
 })
 
+// Setup the lights in the scene
 let sun;
 function setupLights() {
   sun = new THREE.DirectionalLight();
@@ -67,6 +75,19 @@ function setupLights() {
   scene.add(ambient);
 }
 
+// add NPCs
+const npcs = []; 
+for (let i = 0; i < 1; i++) {  // Increase the number of NPCs for better visibility
+  const x = Math.random() * 20 - 10;  // Random x position within -10 to 10
+  const z = Math.random() * 20 - 10;  // Random z position within -10 to 10
+  //const y = 20;
+  const y = world.getTerrainHeightAt(x, z) + 1;  // Place NPC on top of the terrain
+  const position = new THREE.Vector3(x, y, z);
+  const npc = new NPC(scene, world, position);
+  npcs.push(npc);
+  console.log(`NPC ${i + 1} created at:`, position);
+}
+
 // Render loop
 let previousTime = performance.now();
 function animate() {
@@ -74,6 +95,11 @@ function animate() {
 
   const currentTime = performance.now();
   const dt = (currentTime - previousTime) / 1000;
+  
+  for (const npc of npcs) {
+    npc.update(dt);
+    //console.log("NPC position:", npc.position);
+  }
 
   // Only update physics when player controls are locked
   if (player.controls.isLocked) {

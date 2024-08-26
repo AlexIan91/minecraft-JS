@@ -98,6 +98,22 @@ export class World extends THREE.Group {
     this.generate();
   }
 
+  getTerrainHeightAt(x, z) {
+    const chunkX = Math.floor(x / this.chunkSize);
+    const chunkZ = Math.floor(z / this.chunkSize);
+    const chunk = this.getChunk(chunkX, chunkZ);
+    if (chunk) {
+      const localX = Math.floor(x % this.chunkSize);
+      const localZ = Math.floor(z % this.chunkSize);
+      for (let y = chunk.size.height - 1; y >= 0; y--) {
+        if (chunk.getBlock(localX, y, localZ).id !== blocks.empty.id) {
+          return y + 1;
+        }
+      }
+    }
+    return 0;
+  }
+
   /**
    * Regenerate the world data model and the meshes
    */

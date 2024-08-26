@@ -1,3 +1,21 @@
+/**
+ * physics.js - Physics simulation module for a voxel-based game world
+ * 
+ * This module implements a basic physics system for player movement and collision
+ * detection in a block-based world. It includes:
+ * 
+ * - Gravity simulation
+ * - Collision detection using a two-phase approach (broad phase and narrow phase)
+ * - Collision resolution for player-block interactions
+ * - Helper methods for visualizing collisions (for debugging purposes)
+ * 
+ * The main class, Physics, handles the update loop, collision detection, and 
+ * resolution. It interacts closely with the Player and World classes to 
+ * simulate realistic movement and interactions in the game environment.
+ * 
+ * @module physics
+ */
+
 import * as THREE from 'three';
 import { blocks } from './blocks';
 import { Player } from './player';

@@ -1,3 +1,15 @@
+/*
+player.js defines a Player class that manages the player's state and interactions in a 3D world:
+- Handles player movement, jumping, and sprinting
+- Manages the player's camera and controls (using PointerLockControls)
+- Implements block selection and modification (adding/removing blocks)
+- Handles tool animations and visibility
+- Processes user input (keyboard and mouse events)
+- Provides methods for updating player state and physics
+- Includes debug features like a bounds helper and position display
+*/
+
+
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { World } from './world';

@@ -59,8 +59,8 @@ h1 {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #00000080;
-
+  /* background-color: #00000080; */
+  
   display: flex;
   justify-content: center;
   align-items: center;
