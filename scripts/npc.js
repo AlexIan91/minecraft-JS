@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export class NPC {
+  
   constructor(scene, world, position) {
     this.scene = scene;
     this.world = world;
@@ -11,25 +12,44 @@ export class NPC {
     this.mixer = null;
     this.actions = {};
     this.currentAction = null;
-    this.modelScale = 10; // Adjust this value to make the model more visible
+    this.modelScale = 3; // Adjust t whis value to make the model more visible
     this.loadModel();
     console.log("NPC construct or called with position:", position);
-
   } 
 
   loadModel() {
     const loader = new GLTFLoader();
+
+    /**
+     * Loads and sets up the 3D model for the NPC.
+     * 
+     * This method loads a GLTF model, scales it, positions it, and sets up its animations.
+     * It uses the GLTFLoader to load the model file and adds the loaded model to the scene.
+     * If animations are present, it sets them up and starts playing either an 'idle' animation
+     * or the first available animation.
+     * 
+     * @param {string} modelPath - The path to the GLTF model file (e.g., 'models/Llama.glb').
+     * @param {function} callback - A callback function that gets called with the loaded GLTF object.
+     * 
+     * @returns {void} This method doesn't return a value.
+     */
+
+    // A representation of Llama.glb get stored in the gltf variable. It contains the 3D model data as well as all the animations.
+    // main properties and 
     loader.load('models/Llama.glb', (gltf) => {
-      this.model = gltf.scene;
+      
+      //.scene: This property of the gltf object represents the root of the loaded 3D model's scene. 
+      // It includes all the meshes, materials, and other components defined in the GLTF file. 
+      this.model = gltf.scene; 
       console.log("Model loaded successfully:", gltf);
+      
       // Scale the model
       this.model.scale.set(this.modelScale, this.modelScale, this.modelScale);
       this.model.position.copy(this.position);
       this.scene.add(this.model);
       console.log("NPC model added to scene:", this.model);
       console.log("NPC model loaded and added to scene at:", this.model.position);
-
-
+      
       // Set up animations
       this.mixer = new THREE.AnimationMixer(this.model);
       gltf.animations.forEach((clip) => {

@@ -75,7 +75,7 @@ function setupLights() {
   scene.add(ambient);
 }
 
-// add NPCs
+/* add NPCs
 const npcs = []; 
 for (let i = 0; i < 1; i++) {  // Increase the number of NPCs for better visibility
   const x = Math.random() * 20 - 10;  // Random x position within -10 to 10
@@ -86,7 +86,7 @@ for (let i = 0; i < 1; i++) {  // Increase the number of NPCs for better visibil
   const npc = new NPC(scene, world, position);
   npcs.push(npc);
   console.log(`NPC ${i + 1} created at:`, position);
-}
+} */
 
 // Render loop
 let previousTime = performance.now();
@@ -96,10 +96,10 @@ function animate() {
   const currentTime = performance.now();
   const dt = (currentTime - previousTime) / 1000;
   
-  for (const npc of npcs) {
-    npc.update(dt);
-    //console.log("NPC position:", npc.position);
-  }
+  // for (const npc of npcs) {
+  //   npc.update(dt);
+  //   //console.log("NPC position:", npc.position);
+  // }
 
   // Only update physics when player controls are locked
   if (player.controls.isLocked) {
