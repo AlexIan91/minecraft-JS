@@ -6,10 +6,9 @@ import { Player } from './player';
 import { Physics } from './physics';
 import { setupUI } from './ui';
 import { ModelLoader } from './modelLoader';
-
 import { NPC } from './npc.js';
+import { CanvasSetup } from './canvasSetup.js'; // Import the CanvasSetup class
 
- 
 // UI Setup. This is the side-panel that let's us change settings.
 const stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -75,18 +74,8 @@ function setupLights() {
   scene.add(ambient);
 }
 
-/* add NPCs
-const npcs = []; 
-for (let i = 0; i < 1; i++) {  // Increase the number of NPCs for better visibility
-  const x = Math.random() * 20 - 10;  // Random x position within -10 to 10
-  const z = Math.random() * 20 - 10;  // Random z position within -10 to 10
-  //const y = 20;
-  const y = world.getTerrainHeightAt(x, z) + 1;  // Place NPC on top of the terrain
-  const position = new THREE.Vector3(x, y, z);
-  const npc = new NPC(scene, world, position);
-  npcs.push(npc);
-  console.log(`NPC ${i + 1} created at:`, position);
-} */
+// add whiteboard to scene
+const canvas1 = new CanvasSetup(scene);
 
 // Render loop
 let previousTime = performance.now();
